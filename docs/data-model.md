@@ -13,7 +13,10 @@
 ## Registrations
 | Column | Type | Notes |
 |---|---|---|
-| Title | Text | Student name |
-| Email | Text | |
-| ClassID | Number | ID of the class in BLSClasses |
-| Status | Choice | enrolled / waitlisted / cancelled |
+| Name (Title) | Text | Full name, filled automatically from first + last |
+| FirstName | Text | |
+| LastName | Text | |
+| Email | Text | Contact email (may be personal, so it lasts after graduation) |
+| ClassID | Number | ID of the class in BLS Classes |
+| Status | Choice | Enrolled / Waitlisted / Cancelled |
+| CancelToken | Text | Random GUID; used in the private cancel link |
