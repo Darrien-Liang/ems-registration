@@ -1,0 +1,113 @@
+Screens:
+  ClassListScreen:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - Label1:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(75, 46, 131, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =55
+            Size: =32
+            Text: ="UWEMS Course Registration"
+            Width: =851
+            X: =37
+            Y: =25
+      - Gallery2:
+          Control: Gallery@2.15.0
+          Variant: Vertical
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Items: |+
+              =SortByColumns(
+                  Filter('BLS Classes', ClassDate >= Today()),
+                  "ClassDate", SortOrder.Ascending
+              )
+            OnSelect: '= '
+            TemplateSize: =85
+            Width: =822
+            X: =8
+            Y: =193
+          Children:
+            - Label3:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: |+
+                    =Text(ThisItem.ClassDate, "ddd, mmm d")
+                  X: =40
+                  Y: =40
+            - Label5:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: |+
+                    =ThisItem.TimeText
+                  Width: =183
+                  X: =167
+                  Y: =40
+            - Label6:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: =ThisItem.Location
+                  X: =350
+                  Y: =40
+            - lblSeats:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Font: =Font.'Open Sans'
+                  OnSelect: =Select(Parent)
+                  Text: |+
+                    =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
+                  X: =525
+                  Y: =40
+            - Button1:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderColor: =ColorFade(Self.Fill, -15%)
+                  Color: =RGBA(255, 255, 255, 1)
+                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                  Fill: =If(Value(lblSeats.Text) > 0, RGBA(75, 46, 131, 1), RGBA(133, 117, 77, 1))
+                  Font: =Font.'Open Sans'
+                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                  HoverColor: =RGBA(255, 255, 255, 1)
+                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                  OnSelect: |-
+                    =Set(varClass, ThisItem);
+                    Navigate(EnrollScreen)
+                  PressedBorderColor: =Self.Fill
+                  PressedColor: =Self.Fill
+                  PressedFill: =Self.Color
+                  Text: =If(Value(lblSeats.Text) > 0, "Register", "Join Waitlist")
+                  X: =630
+                  Y: =40
+      - Button2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: =Refresh('BLS Classes'); Refresh(Registrations)
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="Refresh Page"
+            X: =1136
+            Y: =32
