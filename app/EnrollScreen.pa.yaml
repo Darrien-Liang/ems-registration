@@ -140,7 +140,25 @@ Screens:
             HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
             HoverColor: =RGBA(255, 255, 255, 1)
             HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
-            OnSelect: "=Refresh(Registrations);\r\nWith(\r\n    {\r\n        seatsLeft: varClass.Capacity - CountRows(Filter(Registrations, ClassID = varClass.ID && Status.Value = \"Enrolled\")),\r\n        activeSignups: CountRows(Filter(Registrations,\r\n            Lower(Email) = Lower(Trim(txtEmail.Text)) &&\r\n            Status.Value <> \"Cancelled\" &&\r\n            ClassID in Filter('BLS Classes', ClassDate >= Today()).ID)) // Allows re-registration only after a course has been completed already (re-cert)\r\n    },\r\n    If(\r\n        IsBlank(Trim(txtFirstName.Text)) || IsBlank(Trim(txtLastName.Text)),\r\n            Notify(\"Please enter your first and last name.\", NotificationType.Error),\r\n        !IsMatch(Trim(txtEmail.Text), Match.Email),\r\n            Notify(\"Please enter a valid email address.\", NotificationType.Error),\r\n        activeSignups > 0,\r\n            Notify(\"You're already registered (or waitlisted) for an upcoming class. Please cancel that registration before signing up for another.\", NotificationType.Warning),\r\n        // all good: save the signup\r\n        Patch(\r\n            \r\n            Registrations,\r\n            Defaults(Registrations),\r\n            {\r\n                // Full Name\r\n                Title: Trim(txtFirstName.Text) & \" \" & Trim(txtLastName.Text),\r\n                \r\n                // Full Name, tokenized\r\n                FirstName: Trim(txtFirstName.Text),\r\n                LastName: Trim(txtLastName.Text),\r\n                CancelToken: Text(GUID()),\r\n                Email: Lower(Trim(txtEmail.Text)),\r\n                ClassID: varClass.ID,\r\n                Status: { Value: If(seatsLeft > 0, \"Enrolled\", \"Waitlisted\") }\r\n                \r\n            }\r\n        );\r\n        Set(varResult, If(seatsLeft > 0, \"Enrolled\", \"Waitlisted\"));\r\n        Navigate(ConfirmScreen)\r\n    )\r\n)"
+            OnSelect: |+
+              =If(
+                  IsBlank(Trim(txtFirstName.Text)) || IsBlank(Trim(txtLastName.Text)),
+                      Notify("Please enter your first and last name.", NotificationType.Error),
+                  !IsMatch(Trim(txtEmail.Text), Match.Email),
+                      Notify("Please enter a valid email address.", NotificationType.Error),
+                  // valid: send to the flow
+                  Set(varResponse,
+                      BLSRegister.Run(Trim(txtLastName.Text), 
+                          Lower(Trim(txtEmail.Text)),
+                          varClass.ID, Trim(txtFirstName.Text))
+                      )
+                  );
+                  If(
+                      varResponse.result = "Duplicate",
+                          Notify("You're already registered (or waitlisted) for an upcoming class. Please cancel that registration before signing up for another.", NotificationType.Warning),
+                      Set(varResult, varResponse.result);
+                      Navigate(ConfirmScreen)
+                  )
             PressedBorderColor: =Self.Fill
             PressedColor: =Self.Fill
             PressedFill: =Self.Color
