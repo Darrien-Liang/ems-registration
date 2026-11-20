@@ -2,112 +2,428 @@ Screens:
   ClassListScreen:
     Properties:
       LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |-
+        =Refresh('BLS Classes'); Refresh(Registrations);
+        ClearCollect(colBLS, SortByColumns(Filter('BLS Classes', Course.Value = "AHA BLS Provider" && ClassDate >= Today()), "ClassDate", SortOrder.Ascending));
+        ClearCollect(colHS, SortByColumns(Filter('BLS Classes', Course.Value = "AHA Heartsaver CPR AED" && ClassDate >= Today()), "ClassDate", SortOrder.Ascending))
     Children:
-      - Label1:
-          Control: Label@2.5.1
+      - Container1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
           Properties:
-            BorderColor: =RGBA(0, 18, 107, 1)
-            Color: =RGBA(75, 46, 131, 1)
-            Font: =Font.'Open Sans'
-            FontWeight: =FontWeight.Bold
-            Height: =55
-            Size: =32
-            Text: ="UWEMS Course Registration"
-            Width: =851
-            X: =37
-            Y: =25
-      - Gallery2:
-          Control: Gallery@2.15.0
-          Variant: Vertical
-          Properties:
-            BorderColor: =RGBA(0, 18, 107, 1)
-            Items: |+
-              =SortByColumns(
-                  Filter('BLS Classes', ClassDate >= Today()),
-                  "ClassDate", SortOrder.Ascending
-              )
-            OnSelect: '= '
-            TemplateSize: =85
-            Width: =822
-            X: =8
-            Y: =193
+            ContentLanguage: ="Parent"
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =24
+            Width: =Parent.Width
           Children:
-            - Label3:
+            - lblTitle:
                 Control: Label@2.5.1
                 Properties:
+                  AlignInContainer: =AlignInContainer.Stretch
                   BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(75, 46, 131, 1)
                   Font: =Font.'Open Sans'
-                  OnSelect: =Select(Parent)
-                  Text: |+
-                    =Text(ThisItem.ClassDate, "ddd, mmm d")
-                  X: =40
-                  Y: =40
-            - Label5:
-                Control: Label@2.5.1
+                  FontWeight: =FontWeight.Bold
+                  Height: =55
+                  Size: =32
+                  Text: ="UWEMS Course Registration"
+                  Width: =851
+                  X: =19
+                  Y: =25
+            - htmlInfo:
+                Control: HtmlViewer@2.1.0
                 Properties:
-                  BorderColor: =RGBA(0, 18, 107, 1)
+                  AlignInContainer: =AlignInContainer.Stretch
+                  AutoHeight: =true
                   Font: =Font.'Open Sans'
-                  OnSelect: =Select(Parent)
-                  Text: |+
-                    =ThisItem.TimeText
-                  Width: =183
-                  X: =167
-                  Y: =40
-            - Label6:
-                Control: Label@2.5.1
+                  Height: =100
+                  HtmlText: |-
+                    ="<p>Welcome to the UW Emergency Medical Services course registration portal! UWEMS is a student-run EMS agency, and our AHA-certified student instructors teach CPR courses to help our campus community feel prepared to act in an emergency. Please scroll down to register for our upcoming courses.</p>
+                    <p><b>UWEMS currently offers the following courses:</b></p>
+
+                    <h3>AHA Basic Life Support (BLS)</h3>
+                    <p>The AHA BLS course trains you to recognize life-threatening emergencies and deliver high-quality CPR for adults, children, and infants. You will also practice using an AED, giving breaths with a bag-valve mask, responding to choking emergencies, and working as part of a resuscitation team. Fluency in English is required for this course.</p>
+                    <p>The AHA BLS course is open to anyone, but is most appropriate for healthcare professionals. The course typically satisfies CPR certification requirements for nurses, EMTs, CNAs, MAs, and other healthcare roles. Upon completion, participants earn an American Heart Association BLS Provider card, valid for 2 years.</p>
+                    <ul>
+                    <li><b>Taught by:</b> UWEMS AHA-certified instructors</li>
+                    <li><b>Format:</b> Fully in-person</li>
+                    <li><b>Length:</b> [X hours]</li>
+                    <li><b>Cost:</b> [$X] (payment link included in your confirmation email)</li>
+                    <li><b>Certification:</b> AHA BLS Provider eCard, valid for 2 years</li>
+                    </ul>
+
+                    <h3>AHA Heartsaver CPR/AED</h3>
+                    <p>The AHA Heartsaver CPR/AED course teaches you how to respond confidently in a cardiac emergency. You'll learn to recognize when someone needs help, perform CPR, use an AED, and relieve choking.</p>
+                    <p>Heartsaver is designed for anyone with little to no medical training. The course is most appropriate for individuals who need CPR certification for their job, such as residence life staff, coaches, and childcare workers. Upon completion, participants earn an American Heart Association Heartsaver CPR/AED card, valid for 2 years.</p>
+                    <p><i>Note: AHA Heartsaver is generally NOT accepted for clinical and patient-facing jobs. If you need CPR certification for these roles, please register for the AHA BLS course instead.</i></p>
+                    <ul>
+                    <li><b>Taught by:</b> UWEMS AHA-certified instructors</li>
+                    <li><b>Format:</b> Fully in-person</li>
+                    <li><b>Length:</b> [X hours]</li>
+                    <li><b>Cost:</b> Free</li>
+                    <li><b>Certification:</b> AHA Heartsaver CPR/AED eCard, valid for 2 years</li>
+                    </ul>"
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =12
+                  Width: =1200
+            - conColumns:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
                 Properties:
-                  BorderColor: =RGBA(0, 18, 107, 1)
-                  Font: =Font.'Open Sans'
-                  OnSelect: =Select(Parent)
-                  Text: =ThisItem.Location
-                  X: =350
-                  Y: =40
-            - lblSeats:
-                Control: Label@2.5.1
-                Properties:
-                  BorderColor: =RGBA(0, 18, 107, 1)
-                  Font: =Font.'Open Sans'
-                  OnSelect: =Select(Parent)
-                  Text: |+
-                    =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
-                  X: =525
-                  Y: =40
-            - Button1:
+                  FillPortions: =0
+                  Height: =Max(conBLS.Height, conHS.Height) + Self.PaddingTop + Self.PaddingBottom
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =24
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                Children:
+                  - conBLS:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        ContentLanguage: =
+                        Height: =lblBLSHeader.Height + If(conBLSCols.Visible, conBLSCols.Height, 0) + galBLS.Height + If(lblBLSNone.Visible, lblBLSNone.Height, 0) + 3 * Self.LayoutGap + Self.PaddingTop + Self.PaddingBottom
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =400
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                      Children:
+                        - lblBLSHeader:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(75, 46, 131, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingRight: |+
+                                =5
+                              Size: =20
+                              Text: |-
+                                ="Register: AHA BLS"
+                        - conBLSCols:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =30
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =10
+                              PaddingRight: =Button1.Width + 20
+                              PaddingTop: =8
+                              Visible: =CountRows(colBLS) > 0
+                            Children:
+                              - lblColDate:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: ="Date/Time"
+                                    Width: =180
+                              - lblColLoc:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: ="Location"
+                              - lblColSeats:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Right
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =12
+                                    Text: ="Spots Left"
+                                    Width: =100
+                        - galBLS:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              FillPortions: =0
+                              Height: =CountRows(colBLS) * (Self.TemplateHeight + Self.TemplatePadding) + Self.TemplatePadding
+                              Items: =colBLS
+                              OnSelect: '= '
+                              ShowScrollbar: =false
+                              TemplatePadding: =10
+                              TemplateSize: =85
+                              Width: =870
+                              X: =40
+                              Y: =40
+                            Children:
+                              - Label3:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =Text(ThisItem.ClassDate, "ddd, mmm d")
+                                    Width: =106
+                              - Label5:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =ThisItem.TimeText
+                                    Width: =183
+                                    Y: =40
+                              - Label6:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: =ThisItem.Location
+                                    Width: =178
+                                    X: =180
+                              - lblSeats:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Right
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
+                                    Width: =52
+                                    X: =375
+                              - Button1:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =If(Value(lblSeats.Text) > 0, RGBA(75, 46, 131, 1), RGBA(133, 117, 77, 1))
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |-
+                                      =Set(varClass, ThisItem);
+                                      Navigate(EnrollScreen)
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: =If(Value(lblSeats.Text) > 0, "Register", "Join Waitlist")
+                                    X: =437
+                        - lblBLSNone:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: ="No upcoming classes right now. Check back soon!"
+                              Visible: =CountRows(colBLS) = 0
+                  - conHS:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.SetByContainer
+                        Height: =lblBLSHeader.Height + If(conHSCols.Visible, conHSCols.Height, 0) + galBLS.Height + If(lblBLSNone.Visible, lblBLSNone.Height, 0) + 3 * Self.LayoutGap + Self.PaddingTop + Self.PaddingBottom
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                      Children:
+                        - lblHSHeader:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(75, 46, 131, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =20
+                              Text: |-
+                                ="Register: AHA Heartsaver"
+                        - conHSCols:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =30
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =10
+                              PaddingRight: =Button1_1.Width+20
+                              PaddingTop: =8
+                              Visible: =CountRows(colHS) > 0
+                            Children:
+                              - lblColDate_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: ="Date/Time"
+                                    Width: =180
+                              - lblColLoc_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: ="Location"
+                              - lblColSeats_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Right
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =12
+                                    Text: ="Spots Left"
+                                    Width: =100
+                        - galHS:
+                            Control: Gallery@2.15.0
+                            Variant: Vertical
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              FillPortions: =0
+                              Height: =CountRows(colHS) * (Self.TemplateHeight + Self.TemplatePadding) + Self.TemplatePadding
+                              Items: =colHS
+                              OnSelect: '= '
+                              ShowScrollbar: =false
+                              TemplatePadding: =10
+                              TemplateSize: =85
+                              Width: =870
+                              X: =40
+                              Y: =40
+                            Children:
+                              - Label3_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =Text(ThisItem.ClassDate, "ddd, mmm d")
+                                    Width: =106
+                              - Label5_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =ThisItem.TimeText
+                                    Width: =183
+                                    Y: =40
+                              - Label6_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: =ThisItem.Location
+                                    Width: =200
+                                    X: =180
+                              - lblSeats_1:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Right
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Font: =Font.'Open Sans'
+                                    OnSelect: =Select(Parent)
+                                    Text: |
+                                      =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
+                                    Width: =52
+                                    X: =375
+                              - Button1_1:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =If(Value(lblSeats_1.Text) > 0, RGBA(75, 46, 131, 1), RGBA(133, 117, 77, 1))
+                                    Font: =Font.'Open Sans'
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    OnSelect: |-
+                                      =Set(varClass, ThisItem);
+                                      Navigate(EnrollScreen)
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Text: =If(Value(lblSeats_1.Text) > 0, "Register", "Join Waitlist")
+                                    X: =437
+                        - lblHSNone:
+                            Control: Label@2.5.1
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Font: =Font.'Open Sans'
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Text: ="No upcoming classes right now. Check back soon!"
+                              Visible: =CountRows(colHS) = 0
+            - Button2:
                 Control: Classic/Button@2.2.0
                 Properties:
+                  AlignInContainer: =AlignInContainer.End
                   BorderColor: =ColorFade(Self.Fill, -15%)
                   Color: =RGBA(255, 255, 255, 1)
                   DisabledBorderColor: =RGBA(166, 166, 166, 1)
-                  Fill: =If(Value(lblSeats.Text) > 0, RGBA(75, 46, 131, 1), RGBA(133, 117, 77, 1))
+                  Fill: =RGBA(54, 176, 75, 1)
                   Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
                   HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
                   HoverColor: =RGBA(255, 255, 255, 1)
                   HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
-                  OnSelect: |-
-                    =Set(varClass, ThisItem);
-                    Navigate(EnrollScreen)
+                  OnSelect: =Refresh('BLS Classes'); Refresh(Registrations)
                   PressedBorderColor: =Self.Fill
                   PressedColor: =Self.Fill
                   PressedFill: =Self.Color
-                  Text: =If(Value(lblSeats.Text) > 0, "Register", "Join Waitlist")
-                  X: =630
-                  Y: =40
-      - Button2:
-          Control: Classic/Button@2.2.0
-          Properties:
-            BorderColor: =ColorFade(Self.Fill, -15%)
-            Color: =RGBA(255, 255, 255, 1)
-            DisabledBorderColor: =RGBA(166, 166, 166, 1)
-            Fill: =RGBA(56, 96, 178, 1)
-            Font: =Font.'Open Sans'
-            FontWeight: =FontWeight.Bold
-            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
-            HoverColor: =RGBA(255, 255, 255, 1)
-            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
-            OnSelect: =Refresh('BLS Classes'); Refresh(Registrations)
-            PressedBorderColor: =Self.Fill
-            PressedColor: =Self.Fill
-            PressedFill: =Self.Color
-            Text: ="Refresh Page"
-            X: =1136
-            Y: =32
+                  Text: ="Refresh Page"
+                  X: =1126
+                  Y: =7

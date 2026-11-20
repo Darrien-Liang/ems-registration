@@ -16,11 +16,19 @@ and automated emails. All data and student information stays in UW Microsoft 365
 - [ ] Phase 5: HeartCode certificate upload + approval
 
 ## Features
+
+- *NEW* Front page now displays description of the website and UWEMS course offerings. 
+- *NEW* Course registration now includes both Heartsaver and AHA BLS. Course offerings are displayed side-by-side.
+- *NEW* Scaffold for the PowerAutomate Flow is now implemented. Allows guests to access website without requiring edit access. Used later for automated emails.
 - Live class list showing seats remaining; full classes switch to "Join waitlist"
 - Signup form with input validation (required names, email format)
 - Automatic enrollment or waitlisting based on capacity
 - One active registration per person across upcoming classes
 - Secure self-service cancellation via a unique per-registration link (GUID token)
+
+## Docs
+- [Data model](docs/data-model.md)
+- [Flows](docs/flows.md)
 
 ## Demos
 ![Class list](screenshots/class-list.png)

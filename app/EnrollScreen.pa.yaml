@@ -11,7 +11,7 @@ Screens:
             FontWeight: =FontWeight.Semibold
             Height: =64
             Size: =26
-            Text: ="AHA BLS Provider Course - Registration"
+            Text: ="Course Confirmation"
             Width: =734
             X: =63
             Y: =34
@@ -21,11 +21,12 @@ Screens:
             BorderColor: =RGBA(0, 18, 107, 1)
             Font: =Font.'Open Sans'
             FontWeight: =FontWeight.Bold
-            Height: =92
-            Text: =Text(varClass.ClassDate, "dddd, mmmm d") & "  •  " & varClass.TimeText & "  •  " & varClass.Location
-            Width: =782
-            X: =228
-            Y: =98
+            Height: =90
+            Text: |+
+              ="[" & varClass.Course.Value & "]: " & Text(varClass.ClassDate, "dddd, mmmm d") & "  •  " & varClass.TimeText & "  •  " & varClass.Location
+            Width: =792
+            X: =226
+            Y: =99
       - Rectangle1:
           Control: Rectangle@2.3.0
           Properties:
@@ -59,7 +60,7 @@ Screens:
             Font: =Font.'Open Sans'
             HoverBorderColor: =RGBA(0, 18, 107, 1)
             HoverFill: =RGBA(186, 202, 226, 1)
-            X: =278
+            X: =304
             Y: =324
       - Label11:
           Control: Label@2.5.1
@@ -88,7 +89,7 @@ Screens:
             Font: =Font.'Open Sans'
             Text: ="Last Name:"
             X: =128
-            Y: =413
+            Y: =381
       - txtLastName:
           Control: Classic/TextInput@2.3.2
           Properties:
@@ -97,16 +98,17 @@ Screens:
             Font: =Font.'Open Sans'
             HoverBorderColor: =RGBA(0, 18, 107, 1)
             HoverFill: =RGBA(186, 202, 226, 1)
-            X: =278
-            Y: =413
+            X: =304
+            Y: =381
       - Label14:
           Control: Label@2.5.1
           Properties:
             BorderColor: =RGBA(0, 18, 107, 1)
             Font: =Font.'Open Sans'
-            Text: ="Email Address:"
+            Text: ="UW Email Address:"
+            Width: =169
             X: =128
-            Y: =502
+            Y: =438
       - txtEmail:
           Control: Classic/TextInput@2.3.2
           Properties:
@@ -115,20 +117,8 @@ Screens:
             Font: =Font.'Open Sans'
             HoverBorderColor: =RGBA(0, 18, 107, 1)
             HoverFill: =RGBA(186, 202, 226, 1)
-            X: =278
-            Y: =502
-      - Label16:
-          Control: Label@2.5.1
-          Properties:
-            BorderColor: =RGBA(0, 18, 107, 1)
-            Font: =Font.'Open Sans'
-            Height: =67
-            Size: =10
-            Text: |-
-              ="Note: All communication and your AHA BLS card (upon completion of the course) will be sent to this email. To ensure you retain access to your AHA BLS card, please use your personal email address, instead of your UW email."
-            Width: =636
-            X: =634
-            Y: =488
+            X: =304
+            Y: =438
       - Button3:
           Control: Classic/Button@2.2.0
           Properties:
@@ -137,6 +127,7 @@ Screens:
             DisabledBorderColor: =RGBA(166, 166, 166, 1)
             Fill: =RGBA(56, 96, 178, 1)
             Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
             HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
             HoverColor: =RGBA(255, 255, 255, 1)
             HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
@@ -146,11 +137,13 @@ Screens:
                       Notify("Please enter your first and last name.", NotificationType.Error),
                   !IsMatch(Trim(txtEmail.Text), Match.Email),
                       Notify("Please enter a valid email address.", NotificationType.Error),
+                  IsBlank(ddAffiliation.Selected.Value), 
+                      Notify("Please select your affiliation.", NotificationType.Error),
                   // valid: send to the flow
                   Set(varResponse,
                       BLSRegister.Run(Trim(txtLastName.Text), 
                           Lower(Trim(txtEmail.Text)),
-                          varClass.ID, Trim(txtFirstName.Text))
+                          varClass.ID, Trim(txtFirstName.Text), ddAffiliation.Selected.Value)
                       )
                   );
                   If(
@@ -183,3 +176,26 @@ Screens:
             Text: ="Back"
             X: =358
             Y: =620
+      - ddAffiliation:
+          Control: Classic/Radio@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =102
+            HoverColor: =RGBA(0, 18, 107, 1)
+            Items: =["UW Student", "UW Faculty/Staff", "Other"]
+            Items.Value: =Value
+            RadioBorderColor: =RGBA(0, 18, 107, 1)
+            RadioSelectionFill: =RGBA(0, 0, 0, 1)
+            RadioSize: =25
+            Width: =280
+            X: =304
+            Y: =503
+      - Label9:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Text: ="UW Affiliation"
+            X: =128
+            Y: =529

@@ -14,7 +14,7 @@ Screens:
             FontWeight: =FontWeight.Semibold
             Height: =64
             Size: =26
-            Text: ="AHA BLS Provider Course - Cancellation"
+            Text: ="Course Cancellation"
             Width: =734
             X: =20
             Y: =20
