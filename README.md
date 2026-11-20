@@ -17,9 +17,10 @@ and automated emails. All data and student information stays in UW Microsoft 365
 
 ## Features
 
-- *NEW* Front page now displays description of the website and UWEMS course offerings. 
-- *NEW* Course registration now includes both Heartsaver and AHA BLS. Course offerings are displayed side-by-side.
-- *NEW* Scaffold for the PowerAutomate Flow is now implemented. Allows guests to access website without requiring edit access. Used later for automated emails.
+- *NEW* Automated confirmation emails for enrolled vs. waitlisted registrants. Emails include individual cancellation links, as well as payment links (only for BLS courses)
+- Front page now displays description of the website and UWEMS course offerings. 
+- Course registration now includes both Heartsaver and AHA BLS. Course offerings are displayed side-by-side.
+- Scaffold for the PowerAutomate Flow is now implemented. Allows guests to access website without requiring edit access. Used later for automated emails.
 - Live class list showing seats remaining; full classes switch to "Join waitlist"
 - Signup form with input validation (required names, email format)
 - Automatic enrollment or waitlisting based on capacity
