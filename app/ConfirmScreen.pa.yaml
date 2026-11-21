@@ -11,7 +11,7 @@ Screens:
             Font: =Font.'Open Sans'
             Height: =184
             Size: =19
-            Text: =If(varResult = "Enrolled", "Congratulations! You have successfully enrolled for your AHA BLS class.", "Thank you for adding yourself to the waitlist. We will email you if a seat opens.")
+            Text: =If(varResult = "Enrolled", "Congratulations! You have successfully enrolled for your class.", "Thank you for adding yourself to the waitlist. We will email you if a seat opens.")
             Width: =1266
             X: =24
             Y: =130
@@ -27,7 +27,7 @@ Screens:
             HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
             HoverColor: =RGBA(255, 255, 255, 1)
             HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
-            OnSelect: =Refresh(Registrations);Navigate(ClassListScreen)
+            OnSelect: =Navigate(ClassListScreen)
             PressedBorderColor: =Self.Fill
             PressedColor: =Self.Fill
             PressedFill: =Self.Color

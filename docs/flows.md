@@ -52,6 +52,7 @@ Called by CancelScreen: `BLSCancel.Run(Token, DoCancel)`
 6. **Respond** with `result` (Found / Cancelled), the student's `name`, and class `details`.
 
 The app never reads or edits the Registrations list directly for cancellations.
+
 The app skips the flow entirely when the link has no token.
 
 
@@ -65,3 +66,9 @@ Note: When a person registers, their entry immediately shows up on Registrations
 refreshes every minute. As such, after someone registers, the number of available slots won't immediately drop by 1. 
 
 This is a visual feature - overbooking for a class is still prevented.
+
+
+# Security
+- Flows run with the owner's connections ("run-only users" can trigger them but can't use the connections elsewhere).
+- Students have no access to Registrations; the app reads only BLS Classes.
+- User inputs used in SharePoint filters are trimmed and quote-escaped to prevent injection.

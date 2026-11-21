@@ -14,7 +14,7 @@ Holds every scheduled class for all courses (name kept for now; may be renamed "
 | Capacity | Number | Max enrolled students |
 | Price | Number | 0 for free courses |
 | PaymentLink | Text | Included in confirmation email when not blank (BLS) |
-
+| EnrolledCount | Number | Maintained by BLSRecount |
 ## Registrations
 | Column | Type | Notes |
 |---|---|---|

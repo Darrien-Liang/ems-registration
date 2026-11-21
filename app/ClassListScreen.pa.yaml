@@ -3,7 +3,7 @@ Screens:
     Properties:
       LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
       OnVisible: |-
-        =Refresh('BLS Classes'); Refresh(Registrations);
+        =Refresh('BLS Classes'); 
         ClearCollect(colBLS, SortByColumns(Filter('BLS Classes', Course.Value = "AHA BLS Provider" && ClassDate >= Today()), "ClassDate", SortOrder.Ascending));
         ClearCollect(colHS, SortByColumns(Filter('BLS Classes', Course.Value = "AHA Heartsaver CPR AED" && ClassDate >= Today()), "ClassDate", SortOrder.Ascending))
     Children:
@@ -218,7 +218,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     OnSelect: =Select(Parent)
                                     Text: |
-                                      =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
+                                      =Max(0, ThisItem.Capacity - Coalesce(ThisItem.EnrolledCount, 0))
                                     Width: =52
                                     X: =375
                               - Button1:
@@ -376,7 +376,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     OnSelect: =Select(Parent)
                                     Text: |
-                                      =ThisItem.Capacity - CountRows(Filter(Registrations, ClassID = ThisItem.ID && Status.Value = "Enrolled"))
+                                      =Max(0, ThisItem.Capacity - Coalesce(ThisItem.EnrolledCount, 0))
                                     Width: =52
                                     X: =375
                               - Button1_1:
@@ -407,23 +407,3 @@ Screens:
                               LayoutMinWidth: =16
                               Text: ="No upcoming classes right now. Check back soon!"
                               Visible: =CountRows(colHS) = 0
-            - Button2:
-                Control: Classic/Button@2.2.0
-                Properties:
-                  AlignInContainer: =AlignInContainer.End
-                  BorderColor: =ColorFade(Self.Fill, -15%)
-                  Color: =RGBA(255, 255, 255, 1)
-                  DisabledBorderColor: =RGBA(166, 166, 166, 1)
-                  Fill: =RGBA(54, 176, 75, 1)
-                  Font: =Font.'Open Sans'
-                  FontWeight: =FontWeight.Bold
-                  HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
-                  HoverColor: =RGBA(255, 255, 255, 1)
-                  HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
-                  OnSelect: =Refresh('BLS Classes'); Refresh(Registrations)
-                  PressedBorderColor: =Self.Fill
-                  PressedColor: =Self.Fill
-                  PressedFill: =Self.Color
-                  Text: ="Refresh Page"
-                  X: =1126
-                  Y: =7

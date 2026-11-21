@@ -11,13 +11,16 @@ and automated emails. All data and student information stays in UW Microsoft 365
 ## Status
 - [x] Phase 1: Class list with live seats remaining
 - [X] Phase 2: Enrollment + waitlist
-- [ ] Phase 3: Automated confirmation emails
-- [ ] Phase 4: Cancellation, waitlist promotion, reminders
-- [ ] Phase 5: HeartCode certificate upload + approval
+- [X] Phase 3: Automated confirmation emails + cancellation. Ensure separation of private database information and user access to flows.
+- [ ] Phase 4: Waitlist promotion, reminders
+
 
 ## Features
 
-- *NEW* Implemented PowerAutomate Flow for self-service class cancellation. Uses the previously-described GUID token, to ensure each participant gets a unique cancellation link.
+- *NEW* Added additional expressions to prevent potential malicious inputs, such as HTML or special characters.
+- *NEW* Implemented PowerAutomate Flow that self-updates space availability with a new column, EnrolledCount. Maintains ability to track availability, while also allowing the Registrations list to be removed from the workspace, hiding the private database.
+    - Warning: Never delete anyone from the Registrations list. Only use the "Enrolled" and "Cancelled" tags.
+- Implemented PowerAutomate Flow for self-service class cancellation. Uses the previously-described GUID token, to ensure each participant gets a unique cancellation link.
 - Automated confirmation emails for enrolled vs. waitlisted registrants. Emails include individual cancellation links, as well as payment links (only for BLS courses)
 - Front page now displays description of the website and UWEMS course offerings. 
 - Course registration now includes both Heartsaver and AHA BLS. Course offerings are displayed side-by-side.
@@ -25,7 +28,7 @@ and automated emails. All data and student information stays in UW Microsoft 365
 - Live class list showing seats remaining; full classes switch to "Join waitlist"
 - Signup form with input validation (required names, email format)
 - Automatic enrollment or waitlisting based on capacity
-- *Clarification* One active registration per person across all courses. In other words, "BLS" XOR "Heartsaver"
+- One active registration per person across all courses. In other words, "BLS" XOR "Heartsaver"
 - Secure self-service cancellation via a unique per-registration link (GUID token)
 
 ## Docs
