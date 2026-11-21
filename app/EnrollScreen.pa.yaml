@@ -148,7 +148,7 @@ Screens:
                   );
                   If(
                       varResponse.result = "Duplicate",
-                          Notify("You're already registered (or waitlisted) for an upcoming class. Please cancel that registration before signing up for another.", NotificationType.Warning),
+                          Notify("You're already registered (or waitlisted) for an upcoming UWEMS class. You can sign up for one class at a time, either BLS or Heartsaver. Please cancel that registration before signing up for another.", NotificationType.Warning),
                       Set(varResult, varResponse.result);
                       Navigate(ConfirmScreen)
                   )

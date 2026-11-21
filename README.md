@@ -17,14 +17,15 @@ and automated emails. All data and student information stays in UW Microsoft 365
 
 ## Features
 
-- *NEW* Automated confirmation emails for enrolled vs. waitlisted registrants. Emails include individual cancellation links, as well as payment links (only for BLS courses)
+- *NEW* Implemented PowerAutomate Flow for self-service class cancellation. Uses the previously-described GUID token, to ensure each participant gets a unique cancellation link.
+- Automated confirmation emails for enrolled vs. waitlisted registrants. Emails include individual cancellation links, as well as payment links (only for BLS courses)
 - Front page now displays description of the website and UWEMS course offerings. 
 - Course registration now includes both Heartsaver and AHA BLS. Course offerings are displayed side-by-side.
 - Scaffold for the PowerAutomate Flow is now implemented. Allows guests to access website without requiring edit access. Used later for automated emails.
 - Live class list showing seats remaining; full classes switch to "Join waitlist"
 - Signup form with input validation (required names, email format)
 - Automatic enrollment or waitlisting based on capacity
-- One active registration per person across upcoming classes
+- *Clarification* One active registration per person across all courses. In other words, "BLS" XOR "Heartsaver"
 - Secure self-service cancellation via a unique per-registration link (GUID token)
 
 ## Docs

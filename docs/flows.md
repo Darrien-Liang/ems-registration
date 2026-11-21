@@ -1,3 +1,7 @@
+<u>**Note: Due to the order in which functions were implemented for the website, all flow names start with "BLS". However, the logic used for these flows work for all classes, including BLS, Heartsaver, etc.**</u>
+
+<u>**DO NOT RENAME THESE FLOWS.**</u>
+
 # BLSRegister flow (Power Automate)
 
 Called by the app's Submit button:
@@ -6,9 +10,12 @@ Called by the app's Submit button:
 1. **Get class**: read the class's capacity and date.
 2. **Check existing**: find active (not cancelled) signups by this email for classes from today onward.
    If any exist, respond `Duplicate` and stop. Prevents double enrollment or malicious spamming.
+
+   Rule : Only 1 active registration per person across all courses.
+
+    In other words, "BLS" XOR "HeartSaver"
 3. **Create registration**: save the signup as `Enrolled`, with ClassDate copied from the class
-   and a random `CancelToken` (`guid()`). When CancelToken is added to the end of the website URL, a 
-   custom link is made that allows class cancellation of ONLY the user associated with that CancelToken. 
+   and a random `CancelToken` (`guid()`). When CancelToken is added to the end of the website URL, a custom link is made that allows class cancellation of ONLY the user associated with that CancelToken. 
 4. **Enrolled up to me**: count `Enrolled` signups for this class with ID ≤ this signup's ID.
 5. **If class is full** (count > capacity): set this signup to `Waitlisted`.
    Because SharePoint IDs increase in creation order, the earliest signup always keeps the last seat. Prevents
@@ -28,3 +35,22 @@ The flow runs with the owner's permissions, so students never write to the Lists
 12. **Send an email (V2)**: sends the confirmation ("Registration confirmed" or "Waitlisted") to the student.
 
 Steps 7–12 run *after* the response to the app, so students aren't kept waiting while the email sends.
+
+# BLSCancel flow (Power Automate)
+
+Called by CancelScreen: `BLSCancel.Run(Token, DoCancel)`
+- `DoCancel = false` → look up only (to show "Cancel registration for …?")
+- `DoCancel = true` → cancel the registration
+
+1. **Find registration**: find the active (not cancelled) registration whose CancelToken matches the token.
+2. **If found** (a match exists AND the token isn't blank):
+   - No → respond `NotFound` and stop.
+   - Yes → continue:
+3. **Reg**: take the single matching row.
+4. **Get class**: read the class's course, date, time, and location.
+5. **If DoCancel**: set the registration's Status to `Cancelled`.
+6. **Respond** with `result` (Found / Cancelled), the student's `name`, and class `details`.
+
+The app never reads or edits the Registrations list directly for cancellations.
+The app skips the flow entirely when the link has no token.
+

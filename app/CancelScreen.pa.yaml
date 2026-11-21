@@ -4,7 +4,11 @@ Screens:
       LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
       OnVisible: |-
         =Set(varCancelled, false);
-        Set(varReg, LookUp(Registrations, CancelToken = Param("cancel") && Status.Value <> "Cancelled"))
+        If(
+            IsBlank(Param("cancel")),
+                Set(varLookup, Blank()),
+            Set(varLookup, BLSCancel.Run(Param("cancel"), false))
+        )
     Children:
       - Label2_2:
           Control: Label@2.5.1
@@ -29,10 +33,14 @@ Screens:
             Text: |-
               =If(
                   varCancelled,
-                      "Your registration has been cancelled.",
-                  IsBlank(varReg),
+                      "Your registration has been cancelled. To sign up for another class, please use the original link.",
+                  IsBlank(Param("cancel")),
                       "This link is invalid, or this registration was already cancelled.",
-                  "Cancel registration for " & varReg.FirstName & " " & varReg.LastName & "?"
+                  IsBlank(varLookup.result),
+                      "Looking up your registration…",
+                  varLookup.result = "NotFound",
+                      "This link is invalid, or this registration was already cancelled.",
+                  "Cancel registration for " & varLookup.name & "?" & Char(10) & varLookup.details
               )
             Width: =789
             X: =263
@@ -49,14 +57,18 @@ Screens:
             HoverColor: =RGBA(255, 255, 255, 1)
             HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
             OnSelect: |-
-              =Patch(Registrations, varReg, { Status: { Value: "Cancelled" } });
-              Set(varCancelled, true);
-              Notify("Your registration has been cancelled.", NotificationType.Success)
+              =Set(varCancelResp, BLSCancel.Run(Param("cancel"), true));
+              If(
+                  varCancelResp.result = "Cancelled",
+                      Set(varCancelled, true);
+                      Notify("Your registration has been cancelled.", NotificationType.Success),
+                  Notify("Something went wrong. Please contact UW EMS.", NotificationType.Error)
+              )
             PressedBorderColor: =Self.Fill
             PressedColor: =Self.Fill
             PressedFill: =Self.Color
             Text: ="Cancel Reservation"
-            Visible: =!IsBlank(varReg) && !varCancelled
+            Visible: =varLookup.result = "Found" && !varCancelled
             Width: =325
             X: =495
             Y: =357
