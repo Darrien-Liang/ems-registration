@@ -54,3 +54,14 @@ Called by CancelScreen: `BLSCancel.Run(Token, DoCancel)`
 The app never reads or edits the Registrations list directly for cancellations.
 The app skips the flow entirely when the link has no token.
 
+
+# BLSRecount flow (Power Automate)
+
+Called whenever a row in the Registrations spreadsheet is created (person registered) or modified (cancellation, fields are edited by admin, etc)
+1. **Enrolled for class**: Looks at all registrants enrolled in a given class.
+2. **Update item**: Updates the value of EnrolledCount, in the BLS Classes list, to equal the number of registrants with that ClassID and are enrolled. Later used to determine available slots.
+
+Note: When a person registers, their entry immediately shows up on Registrations. However, the website and EnrolledCount on the BLS Classes list
+refreshes every minute. As such, after someone registers, the number of available slots won't immediately drop by 1. 
+
+This is a visual feature - overbooking for a class is still prevented.
